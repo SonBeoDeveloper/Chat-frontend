@@ -10,11 +10,13 @@ import {
   Typography,
   alpha,
   styled,
+  useTheme,
 } from "@mui/material";
 import { faker } from "@faker-js/faker";
 import React from "react";
 import { ArchiveBox, CircleDashed, MagnifyingGlass } from "phosphor-react";
-
+import { ChatList } from "../../data";
+import { SimpleBarStyle } from "../../components/Scrollbar";
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
     backgroundColor: "#44b700",
@@ -43,35 +45,43 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
     },
   },
 }));
-const ChatElement = () => {
+const ChatElement = ({ id, name, img, msg, time, online, unread }) => {
+  const theme = useTheme();
   return (
     <Box
       sx={{
         width: "100%",
         borderRadius: 1,
-        backgroundColor: "#fff",
+        backgroundColor:
+          theme.palette.mode === "light"
+            ? "#fff"
+            : theme.palette.background.default,
       }}
       p={2}
     >
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Stack direction="row" spacing={2}>
-          <StyledBadge
-            overlap="circular"
-            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-            variant="dot"
-          >
+          {online ? (
+            <StyledBadge
+              overlap="circular"
+              anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+              variant="dot"
+            >
+              <Avatar src={faker.image.avatar()} />
+            </StyledBadge>
+          ) : (
             <Avatar src={faker.image.avatar()} />
-          </StyledBadge>
+          )}
           <Stack spacing={0.3}>
-            <Typography variant="subtitle2">Tú Trinh</Typography>
-            <Typography variant="caption">Anh Sơn dep trai</Typography>
+            <Typography variant="subtitle2">{name}</Typography>
+            <Typography variant="caption">{msg}</Typography>
           </Stack>
         </Stack>
         <Stack spacing={2} alignItems="center">
           <Typography sx={{ fontWeight: 600 }} variant="caption">
-            9:36
+            {time}
           </Typography>
-          <Badge color="primary" badgeContent={2}></Badge>
+          <Badge color="primary" badgeContent={unread}></Badge>
         </Stack>
       </Stack>
     </Box>
@@ -80,7 +90,7 @@ const ChatElement = () => {
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: 20,
-  backgroundColor: alpha(theme.palette.background.paper, 1),
+  backgroundColor: alpha(theme.palette.background.default, 1),
   marginRight: theme.spacing(2),
   marginLeft: 0,
   width: "100%",
@@ -103,17 +113,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 const Chats = () => {
+  const theme = useTheme();
   return (
     <Box
       sx={{
         position: "relative",
-        height: "100vh",
         width: 320,
-        backgroundColor: "#f8faff",
+        backgroundColor:
+          theme.palette.mode === "light"
+            ? "#f8faff"
+            : theme.palette.background.paper,
         boxShadow: "0px 0px 2px rgba(0,0,0,0.25)",
       }}
     >
-      <Stack p={3} spacing={2}>
+      <Stack
+        p={3}
+        spacing={2}
+        sx={{
+          height: "100vh",
+        }}
+      >
         <Stack
           direction="row"
           alignItems="center"
@@ -142,8 +161,29 @@ const Chats = () => {
           </Stack>
           <Divider />
         </Stack>
-        <Stack direction="column">
-          <ChatElement />
+        <Stack
+          spacing={2}
+          direction="column"
+          sx={{ flexGrow: 1, overflow: "scroll", height: "100%" }}
+        >
+          <SimpleBarStyle timeout={500} clickOnTrack={false}>
+            <Stack spacing={2.4}>
+              <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+                Pinned
+              </Typography>
+              {ChatList.filter((el) => el.pinned).map((el) => {
+                return <ChatElement {...el} />;
+              })}
+            </Stack>
+            <Stack spacing={2.4}>
+              <Typography variant="subtitle2" sx={{ color: "#676767" }}>
+                All chat
+              </Typography>
+              {ChatList.filter((el) => !el.pinned).map((el) => {
+                return <ChatElement {...el} />;
+              })}
+            </Stack>
+          </SimpleBarStyle>
         </Stack>
       </Stack>
     </Box>
