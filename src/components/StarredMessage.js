@@ -15,15 +15,12 @@ import { CaretLeft, X } from "phosphor-react";
 import { faker } from "@faker-js/faker";
 import { SHARED_DOC, SHARED_LINK } from "../data";
 import { DocMsg, LinkMsg } from "../Conversation/MsgTypes";
+import Message from "../Conversation/Message";
 
-const SharedMessage = () => {
+const StarredMessage = () => {
   const theme = useTheme();
   const dispatch = useDispatch();
-  const [value, setValue] = React.useState(0);
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
   return (
     <Box sx={{ width: 320, height: "100vh" }}>
       <Stack sx={{ height: "100%" }}>
@@ -50,19 +47,10 @@ const SharedMessage = () => {
             >
               <CaretLeft />
             </IconButton>
-            <Typography variant="subTitle2">Shared Messages</Typography>
+            <Typography variant="subTitle2">Starred Messages</Typography>
           </Stack>
         </Box>
-        <Tabs
-          sx={{ px: 2, pt: 2 }}
-          value={value}
-          onChange={handleChange}
-          centered
-        >
-          <Tab label="Media" />
-          <Tab label="Links" />
-          <Tab label="Docs" />
-        </Tabs>
+
         <Stack
           sx={{
             height: "100%",
@@ -71,31 +59,13 @@ const SharedMessage = () => {
             overflowY: "scroll",
           }}
           p={3}
-          spacing={value === 1 ? 1 : 3}
+          spacing={3}
         >
-          {(() => {
-            switch (value) {
-              case 0:
-                return (
-                  <Grid item xs={4}>
-                    <img
-                      src={faker.image.avatar()}
-                      alt={faker.name.fullName()}
-                    />
-                  </Grid>
-                );
-              case 1:
-                return SHARED_LINK.map((el) => <LinkMsg el={el} />);
-              case 2:
-                return SHARED_DOC.map((el) => <DocMsg el={el} />);
-              default:
-                break;
-            }
-          })()}
+          <Message />
         </Stack>
       </Stack>
     </Box>
   );
 };
 
-export default SharedMessage;
+export default StarredMessage;

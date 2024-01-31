@@ -219,7 +219,77 @@ const Message_options = [
     title: "Delete Message",
   },
 ];
-
+const SHARED_LINK = [
+  {
+    type: "msg",
+    subtype: "link",
+    preview: faker.image.cats(),
+    message: "oke t lm duoc",
+    incoming: true,
+    outgoing: false,
+  },
+  {
+    type: "msg",
+    subtype: "link",
+    preview: faker.image.cats(),
+    message: "oke t lm duoc",
+    incoming: true,
+    outgoing: false,
+  },
+  {
+    type: "msg",
+    subtype: "link",
+    preview: faker.image.cats(),
+    message: "oke t lm duoc",
+    incoming: true,
+    outgoing: false,
+  },
+  {
+    type: "msg",
+    subtype: "link",
+    preview: faker.image.cats(),
+    message: "oke t lm duoc",
+    incoming: true,
+    outgoing: false,
+  },
+];
+const SHARED_DOC = [
+  {
+    type: "msg",
+    subtype: "doc",
+    message: "t dg o day",
+    incoming: true,
+    outgoing: false,
+  },
+  {
+    type: "msg",
+    subtype: "doc",
+    message: "t dg o day",
+    incoming: true,
+    outgoing: false,
+  },
+  {
+    type: "msg",
+    subtype: "doc",
+    message: "t dg o day",
+    incoming: true,
+    outgoing: false,
+  },
+  {
+    type: "msg",
+    subtype: "doc",
+    message: "t dg o day",
+    incoming: true,
+    outgoing: false,
+  },
+  {
+    type: "msg",
+    subtype: "doc",
+    message: "t dg o day",
+    incoming: true,
+    outgoing: false,
+  },
+];
 export {
   Profile_Menu,
   Nav_Setting,
@@ -227,4 +297,6 @@ export {
   ChatList,
   Chat_History,
   Message_options,
+  SHARED_LINK,
+  SHARED_DOC,
 };
